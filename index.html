@@ -67,6 +67,9 @@
 
         function game() {
             let rounds = parseInt(prompt("How many games would you like to play?"));
+            while(isNaN(rounds) || rounds == 0) {
+                rounds = parseInt(prompt("How many games would you like to play?"));
+            }
             let playerPoints = 0;
             let aiPoints = 0;
             for(let i = 0; i < rounds; i++) {
@@ -85,10 +88,13 @@
             console.log("AI points: " + aiPoints);
             if(playerPoints > aiPoints) {
                 console.log("You won!");
-            } else {
+            } else if(playerPoints < aiPoints ) {
                 console.log("You lost :(");
+            } else {
+                console.log("It was a tie!");
             }
         }
+        game();
     </script>
 </body>
 </html>
