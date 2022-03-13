@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <script>
+        let aiPoints = 0;
+        let playerPoints = 0;
+
         function computerPlay() {
             let choice = Math.floor(Math.random() * 3) + 1;
             if(choice == 1) {
@@ -22,16 +26,11 @@
         }
         //console.log("Computer has picked " + computerPlay());
 
-        function playerPlay() {
-            let playerSelect = prompt("Please pick rock, paper, or scissors.").toLowerCase();
-            while(playerSelect != "rock" && playerSelect != "paper" && playerSelect != "scissors") {
-                playerSelect = prompt("Please pick rock, paper, or scissors.").toLowerCase();
-            }
-            return playerSelect;
-        }
-
-        function playRound() {
-            const playerSelect = playerPlay();
+        function playRound(playerSelect) {
+            const playerScore = document.querySelector("#PlayerPoints");
+            const aiScore = document.querySelector("#AiPoints");
+            const msg1 = document.querySelector("#message-1");
+            const msg2 = document.querySelector("#message-2");
             const enemySelect = computerPlay();
             let winner;
             console.log("The computer picked: " + enemySelect);
@@ -62,39 +61,55 @@
                     winner = -1;
                 }
             }
-            return winner;
-        }
 
-        function game() {
-            let rounds = parseInt(prompt("How many games would you like to play?"));
-            while(isNaN(rounds) || rounds == 0) {
-                rounds = parseInt(prompt("How many games would you like to play?"));
-            }
-            let playerPoints = 0;
-            let aiPoints = 0;
-            for(let i = 0; i < rounds; i++) {
-                let winner = playRound();
-                if(winner == 0) {
-                    console.log("You won this round!");
-                    playerPoints++;
-                } else if(winner == 1){
-                    console.log("The computer won this round!");
-                    aiPoints++;
-                } else {
-                    console.log("It was a tie!");
-                }
-            }
-            console.log("Your points: " + playerPoints);
-            console.log("AI points: " + aiPoints);
-            if(playerPoints > aiPoints) {
-                console.log("You won!");
-            } else if(playerPoints < aiPoints ) {
-                console.log("You lost :(");
+            if(winner == 0) {
+                console.log("You won this round!");
+                playerPoints++;
+                console.log(playerPoints, "Player points");
+                msg1.textContent = "You won this round."
+            } else if(winner == 1){
+                console.log("The computer won this round!");
+                aiPoints++;
+                console.log(aiPoints, "AI points");
+                msg1.textContent = "The computer won this round."
             } else {
                 console.log("It was a tie!");
+                msg1.textContent = "This round was a tie."
             }
+
+            if(playerPoints == 5 || aiPoints == 5) {
+                if(playerPoints == 5) {
+                    msg2.textContent = "You won the game!"
+                } else if (aiPoints == 5){
+                    msg2.textContent = "The computer won the game."
+                }
+                document.querySelector("#rock").onclick = null;
+                document.querySelector("#paper").onclick = null;
+                document.querySelector("#scissors").onclick = null;
+            }
+
+            playerScore.textContent = playerPoints;
+            aiScore.textContent = aiPoints;
         }
-        game();
     </script>
+    <div class="main-container">
+        <div class="score">
+            <div class="score-title">
+                <h4>Player</h4>
+                <h4 id="PlayerPoints">0</h4>
+            </div>
+            <div class="score-title">
+                <h4>AI</h4>
+                <h4 id="AiPoints">0</h4>
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="rock" onclick="playRound('rock')">Rock</button>
+            <button id="paper" onclick="playRound('paper')">Paper</button>
+            <button id="scissors" onclick="playRound('scissors')">Scissors</button>
+        </div>
+       <div id="message-1"></div>
+       <div id="message-2"></div>
+    </div>
 </body>
 </html>
